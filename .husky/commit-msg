@@ -1,0 +1,5 @@
+LIGHT_CYAN='\033[106m'
+NO_COLOR='\033[0m' # No Color
+
+echo "${LIGHT_CYAN}[🔎 commit-msg]${NO_COLOR} 💬 Running commitlint"
+lando npx --no -- commitlint --edit "${1}" --config /app/.husky/lint-configs/commitlint.config.js

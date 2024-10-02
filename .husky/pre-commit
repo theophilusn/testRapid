@@ -1,0 +1,17 @@
+LIGHT_CYAN='\033[106m'
+NO_COLOR='\033[0m' # No Color
+
+echo "${LIGHT_CYAN}[🔎 pre-commit]${NO_COLOR} ✨ Running Prettier"
+lando npx lint-staged --config /app/.husky/lint-configs/lint-staged.config.js
+
+echo "${LIGHT_CYAN}[🔎 pre-commit]${NO_COLOR} 🧹 Running PHP Code Beautifier and Fixer"
+lando php ./vendor/bin/phpcbf -p --filter=GitStaged || true
+
+# If phpcbf made any changes to the files in staging, added them to the commit again
+# https://stackoverflow.com/questions/32267030/pre-commit-hook-that-checks-if-staged-files-were-modified-again
+MODIFIED_STAGED_FILES=$(git status --porcelain | sed -n 's/^[AM]M //p')
+if [ "$MODIFIED_STAGED_FILES" != "" ]
+then
+  # shellcheck disable=SC2086
+  git add ${MODIFIED_STAGED_FILES}
+fi

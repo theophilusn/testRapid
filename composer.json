@@ -1,0 +1,138 @@
+{
+  "name": "zucommunications/rapidkit",
+  "description": "A Composer-based installer for Rapidkit.",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "zu",
+      "homepage": "https://zu.com/"
+    }
+  ],
+  "homepage": "https://github.com/ZuCommunications/rapidkit",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    },
+    {
+      "type": "path",
+      "url": "web/modules/custom/*",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+  "require": {
+    "composer/installers": "^1.9",
+    "cweagans/composer-patches": "^1.7",
+    "drupal/core-composer-scaffold": "~10.3.2",
+    "drupal/core-recommended": "~10.3.2",
+    "drupal/guardr_core": "^2.1",
+    "drush/drush": "^12 || ^13",
+    "wikimedia/composer-merge-plugin": "^2.1",
+    "zucommunications/rapidkit_content_features": "^1.1",
+    "zucommunications/rapidkit_core": "^1.2",
+    "zucommunications/rapidkit_theme": "^1.5"
+  },
+  "require-dev": {
+    "drupal/coder": "^8.3",
+    "drupal/core-dev": "^10",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan-deprecation-rules": "^1.1",
+    "mglaman/phpstan-drupal": "^1.1"
+  },
+  "conflict": {
+    "drupal/drupal": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "drupal-scaffold": {
+      "locations": {
+        "web-root": "./web"
+      },
+      "file-mapping": {
+        "[project-root]/.editorconfig": false,
+        "[project-root]/.gitattributes": false,
+        "[web-root]/sites/development.services.yml": false
+      }
+    },
+    "installer-paths": {
+      "web/core": [
+        "type:drupal-core"
+      ],
+      "web/libraries/{$name}": [
+        "type:drupal-library"
+      ],
+      "web/modules/contrib/{$name}": [
+        "type:drupal-module"
+      ],
+      "web/profiles/contrib/{$name}": [
+        "type:drupal-profile"
+      ],
+      "web/themes/contrib/{$name}": [
+        "type:drupal-theme"
+      ],
+      "drush/Commands/contrib/{$name}": [
+        "type:drupal-drush"
+      ],
+      "web/modules/custom/{$name}": [
+        "type:drupal-custom-module"
+      ],
+      "web/profiles/custom/{$name}": [
+        "type:drupal-custom-profile"
+      ],
+      "web/themes/custom/{$name}": [
+        "type:drupal-custom-theme"
+      ],
+      "web/private/scripts/quicksilver/{$name}/": [
+        "type:quicksilver-script"
+      ]
+    },
+    "composer-exit-on-patch-failure": true,
+    "patchLevel": {
+      "drupal/core": "-p2"
+    },
+    "enable-patching": true,
+    "patches": {
+      "drupal/core": {
+        "The dotfiles are ignored when copied over in Starterkit - https://www.drupal.org/project/drupal/issues/3456699": "https://git.drupalcode.org/project/drupal/-/merge_requests/8549.patch"
+      }
+    },
+    "merge-plugin": {
+      "include": [
+        "web/modules/custom/*/composer.libraries.json",
+        "web/modules/contrib/*/composer.libraries.json"
+      ]
+    }
+  },
+  "scripts": {
+    "pre-update-cmd": [
+      "DrupalComposerManaged\\ComposerScripts::preUpdate"
+    ],
+    "post-update-cmd": [
+      "DrupalComposerManaged\\ComposerScripts::postUpdate"
+    ],
+    "phpcs": "./vendor/bin/phpcs -p --ignore=web/themes/custom/**/node_modules/*",
+    "phpcbf": "./vendor/bin/phpcbf",
+    "phpstan": "./vendor/bin/phpstan analyse"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "platform": {
+      "php": "8.3.0"
+    },
+    "allow-plugins": {
+      "composer/installers": true,
+      "cweagans/composer-patches": true,
+      "drupal/core-composer-scaffold": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true,
+      "wikimedia/composer-merge-plugin": true,
+      "php-http/discovery": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+LIGHT_CYAN='\033[106m'
+NO_COLOR='\033[0m' # No Color
+
+echo "${LIGHT_CYAN}[🔎 pre-push]${NO_COLOR} 🐘 Running PHPStan"
+lando php ./vendor/bin/phpstan analyse --memory-limit=2G
+
+echo "${LIGHT_CYAN}[🔎 pre-push]${NO_COLOR} 👃 Running PHP Code Sniffer"
+lando composer run phpcs
+
+echo "${LIGHT_CYAN}[🔎 pre-push]${NO_COLOR} 🧵 Running Eslint"
+lando npm run lint
+
+# TODO: Resolve Security Review issues
+#echo "${LIGHT_CYAN}[🚨 pre-push]${NO_COLOR} 🧵 Running Security Review"
+#lando drush secrev

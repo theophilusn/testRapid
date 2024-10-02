@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="RapidKit">
+  <description>PHP CodeSniffer configuration for RapidKit development.</description>
+
+  <!-- Check all files in the following directories. -->
+  <file>web/modules/custom</file>
+  <file>web/themes/custom</file>
+  <file>web/profiles/custom</file>
+
+  <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,yml"/>
+
+  <!-- Change this value to 7 if you want to check Drupal 7 code. -->
+  <config name="drupal_core_version" value="8"/>
+
+  <!-- If you have Coder installed locally then you can reference the Drupal
+  standards with relative paths. Otherwise, simply use "Drupal" and
+  "DrupalPractice. -->
+  <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal">
+    <!-- Example how you would disable a rule you are not compliant with yet:
+    <exclude name="Drupal.Commenting.Deprecated"/>
+    -->
+    <exclude name="Drupal.Commenting.ClassComment.Missing"/>
+    <exclude name="Drupal.Commenting.DocComment.Empty"/>
+    <exclude name="Drupal.Commenting.DocComment.MissingShort"/>
+    <exclude name="Drupal.Commenting.FunctionComment.Missing"/>
+    <exclude name="Drupal.Commenting.FunctionComment.MissingParamComment"/>
+    <exclude name="Drupal.Commenting.FunctionComment.MissingReturnComment"/>
+    <exclude name="Drupal.Commenting.VariableComment.Missing"/>
+    <exclude name="Drupal.InfoFiles.AutoAddedKeys.Version"/>
+  </rule>
+
+  <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice"/>
+  <!-- Example how you would disable an external rule you do not like:
+  <rule ref="PEAR.Functions.ValidDefaultValue.NotAtEnd">
+    <severity>0</severity>
+  </rule>
+  -->
+
+</ruleset>

@@ -1,0 +1,106 @@
+name: rapidkit # TODO: Change this to your project name
+recipe: drupal10
+config:
+  php: '8.3'
+  via: nginx
+  webroot: web
+  xdebug: true
+  database: mariadb:10.6
+tooling:
+  drush:
+    service: appserver
+    cmd: /bin/sh -c "drush --root=$LANDO_WEBROOT --uri=https://$LANDO_APP_NAME.lndo.site $@" "$0"
+  node:
+    service: node
+  npx:
+    service: node
+  npm:
+    service: node
+  npm-theme:
+    description: Run npm commands in the custom theme directory
+    service: node
+    dir: /app/web/themes/contrib/rapidkit_theme
+    cmd: npm
+  secrev:
+    description: Wrapper of drush secrev command
+    service: appserver
+    cmd: drush --uri=https://$LANDO_APP_NAME.lndo.site secrev
+  ssh-fix:
+    service: appserver
+    description: Fix ssh auth sock permission for MacOS users. Lando rebuild fixes the problem as well.
+    cmd: "/bin/chgrp www-data /run/host-services/ssh-auth.sock && /bin/chmod g+w /run/host-services/ssh-auth.sock"
+    user: root
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug.
+    cmd: docker-php-ext-enable xdebug && pkill -o -USR2 php-fpm
+    user: root
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug.
+    cmd: rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && pkill -o -USR2 php-fpm
+    user: root
+#  pull: TODO: Make sure your drush alias are setup first, then uncomment and modify the pull-script.sh file to pull from specific server environment
+#    description: Run drush sql:sync and rsync commands to pull database and files from the an environment
+#    service: appserver
+#    cmd: /app/.build/lando-pull-script.sh
+#    level: app
+#    options:
+#      environment:
+#        passthrough: true
+#        alias:
+#          - env
+#        describe: "Select the environment to pull from."
+#        interactive:
+#          type: list
+#          choices:
+#            - dev2
+#            - stg2
+#            - prod2
+#    user: root
+services:
+  appserver:
+    # ssh fix https://github.com/lando/lando/issues/478#issuecomment-654634511
+    overrides:
+      volumes:
+        - type: bind
+          source: "${LANDO_SSH_AUTH_SOCK:-/run/host-services/ssh-auth.sock}"
+          target: /run/host-services/ssh-auth.sock
+      environment:
+        SSH_AUTH_SOCK: /run/host-services/ssh-auth.sock
+    run_as_root:
+      - chown www-data:www-data /run/host-services/ssh-auth.sock
+      - chmod g+w /run/host-services/ssh-auth.sock
+    run:
+      - .build/lando-appserver-script.sh
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - appserver
+  node:
+    type: node:18
+    build_as_root:
+      - apt update -y && apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
+    run:
+      - .build/lando-npm-script.sh
+    scanner: false
+    volumes:
+      - /usr/bin/git:/usr/bin/git
+      - /tmp/.X11-unix:/tmp/.X11-unix
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
+    database:
+      type: mariadb:10.5
+proxy:
+  # TODO: Change these proxy urls to have your project name
+  mailhog:
+    - rapidkit-mail.lndo.site
+  node:
+    - rapidkit-storybook.lndo.site:6006
+exclude:
+  - vendor
+  - node_modules
+  - web/themes/custom/duchess/node_modules

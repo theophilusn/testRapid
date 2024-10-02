@@ -1,0 +1,10 @@
+parameters:
+    level: max
+    paths:
+        - web/modules/custom
+        - web/themes/custom
+        - web/profiles/custom
+    excludePaths:
+        - web/themes/custom/**/node_modules/*
+    ignoreErrors:
+        - identifier: missingType.iterableValue

@@ -1,0 +1,36 @@
+/.build
+/config
+/node_modules
+/upstream-configuration
+/vendor
+/.idea
+/.gitattributes
+/.gitignore
+composer.lock
+package-lock.json
+
+# Ignore all Drupal Core and Drupal Contrib files except for our
+# custom modules and themes.
+!/web
+/web/*
+!/web/modules
+!/web/themes
+/web/modules/*
+/web/themes/*
+!/web/modules/custom
+!/web/themes/custom
+/web/themes/custom/**/dist/
+/web/themes/custom/**/storybook-static/*
+
+# Files that have problematic syntax
+web/themes/custom/test_theme/components/form/form-element/form-element.twig
+web/themes/custom/test_theme/templates/content-edit/filter-tips.html.twig
+web/themes/custom/test_theme/templates/dataset/item-list.html.twig
+web/themes/custom/test_theme/templates/dataset/table.html.twig
+web/themes/custom/test_theme/templates/form/form-element--checkbox.html.twig
+web/themes/custom/test_theme/templates/form/form-element.html.twig
+web/themes/custom/test_theme/templates/form/form.html.twig
+web/themes/custom/test_theme/templates/layout/html.html.twig
+web/themes/custom/test_theme/templates/navigation/links.html.twig
+web/themes/custom/test_theme/templates/navigation/menu.html.twig
+web/themes/custom/test_theme/templates/views/views-view-list.html.twig

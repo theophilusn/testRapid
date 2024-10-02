@@ -1,0 +1,43 @@
+{
+  "name": "rapidkit",
+  "version": "0.0.1",
+  "description": "Project tooling",
+  "workspaces": [
+    "web/themes/contrib/rapidkit_theme"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZuCommunications/rapidkit.git"
+  },
+  "author": "zu (https://zu.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@destination/prettier-plugin-twig": "^1.5.0",
+    "cypress": "^13.13.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-cypress": "^3.2.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-yml": "^1.14.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2"
+  },
+  "scripts": {
+    "lint": "eslint --no-error-on-unmatched-pattern --no-eslintrc -c .eslintrc.json '.husky/**/*.js' 'cypress.config.js' 'cypress/**/*.js' 'web/{modules,profiles,theme}/custom/**/*.{js}'",
+    "lint:fix": "eslint --no-error-on-unmatched-pattern --no-eslintrc -c .eslintrc.json --fix '.husky/**/*.js' 'cypress.config.js' 'cypress/**/*.js' 'web/{modules,profiles,theme}/custom/**/*.{js}'",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "prepare": "husky",
+    "build": "npm run build --workspace=web/themes/contrib/rapidkit_theme",
+    "watch": "npm run watch --workspace=web/themes/contrib/rapidkit_theme",
+    "build-storybook": "npm run build-storybook --workspace=web/themes/contrib/rapidkit_theme",
+    "storybook": "npm run storybook --workspace=web/themes/contrib/rapidkit_theme"
+  }
+}
